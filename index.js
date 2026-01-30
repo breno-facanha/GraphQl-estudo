@@ -2,6 +2,16 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import gql from "graphql-tag";
 
+const perfils = [
+  {
+      id: 1,
+      nome: "Comum"
+  },
+  {
+      id: 2,
+      nome: "Administrador"
+  }
+]
 
 const usuarios = [
   {
@@ -36,6 +46,9 @@ const typeDefs = gql`
     melhorUsuario: Usuario!
     melhorProduto: Produto!
     usuarios: [Usuario!]!
+    usuario(id: Int!): Usuario
+    perfils: [Perfil!]!
+    perfil(id: Int!): Perfil
   },
   type Usuario {
     id: Int
@@ -51,6 +64,11 @@ const typeDefs = gql`
     preco: Float
     desconto: Float
     precoComDesconto: Float 
+  }, 
+
+  type Perfil { 
+    id: Int
+    nome: String
   }
 `;
 
@@ -75,7 +93,17 @@ const resolvers = {
             desconto: 0.10
         }
     },
-    usuarios: () => usuarios
+    usuarios: () => usuarios,
+    usuario: (_, args) => {
+        const id = args.id;
+        return usuarios.find(usuario => usuario.id === id);
+    },
+    perfils: () => perfils,
+
+    perfil: (_, args) => {
+      const id = args.id;
+      return perfils.find(perfil => perfil.id === id);
+    },
   },
   Usuario: {
     nome(usuario){
