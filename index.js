@@ -2,6 +2,31 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import gql from "graphql-tag";
 
+
+const usuarios = [
+  {
+      id: 1,
+      nome_completo: "Breno Facanha",
+      email: "breno@gmail.com",
+      salario: 4500.50,
+      vip: true
+  },
+  {
+      id: 2,
+      nome_completo: "Sofia Facanha",
+      email: "breno@gmail.com",
+      salario: 1500.50,
+      vip: true
+  },
+  {
+      id: 3,
+      nome_completo: "Samara VM",
+      email: "breno@gmail.com",
+      salario: 7500.50,
+      vip: true
+  }
+]
+
 const typeDefs = gql`
   scalar DateAtual
 
@@ -10,6 +35,7 @@ const typeDefs = gql`
     hora: DateAtual
     melhorUsuario: Usuario!
     melhorProduto: Produto!
+    usuarios: [Usuario!]!
   },
   type Usuario {
     id: Int
@@ -48,7 +74,8 @@ const resolvers = {
             preco: 2500.00,
             desconto: 0.10
         }
-    }
+    },
+    usuarios: () => usuarios
   },
   Usuario: {
     nome(usuario){
